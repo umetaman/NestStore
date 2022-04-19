@@ -25,6 +25,7 @@
     "vite-plugin-eslint": "^1.4.0"
   },
   "dependencies": {
-    "sqlite3": "^5.0.3"
+    "sqlite3": "^5.0.3",
+    "vuetify": "3.0.0-alpha.12"
   }
 }
