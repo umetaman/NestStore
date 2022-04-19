@@ -20,6 +20,7 @@
     "lodash": "^4.17.21",
     "nitropack": "^0.2.10",
     "nuxt3": "latest",
+    "sass": "^1.50.1",
     "typescript": "^4.6.3",
     "vite-plugin-eslint": "^1.4.0"
   },
