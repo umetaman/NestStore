@@ -1,0 +1,33 @@
+POST http://localhost:3000/api/test/
+Content-Type: application/json
+
+[
+    {
+        "type": 0,
+        "guid": "000001",
+        "url": "/api/test"
+    },
+    {
+        "type": 1,
+        "guid": "000003",
+        "url": "/api/test",
+        "filename": "TEXTTEXT.txt"
+    },
+    {
+        "type": 2,
+        "guid": "000002",
+        "url": "/api/test/hoge",
+        "text": "HELLOWLLLLL"
+    },
+    {
+        "type": 2,
+        "guid": "000004",
+        "url": "/api/test/hoge/heyhey",
+        "text": "AHOY"
+    },
+    {
+        "type": 0,
+        "guid": "000001",
+        "url": "/api/test"
+    }
+]
