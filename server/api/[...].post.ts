@@ -11,8 +11,8 @@ export default defineEventHandler(async (handler) => {
   for (const rawContent of rawContents) {
     try {
       messages.push(Message.objectToMessage(rawContent))
-    } catch (_e) {
-      // :)
+    } catch (e) {
+      console.error(e)
     }
   }
 

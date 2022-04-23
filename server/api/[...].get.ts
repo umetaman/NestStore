@@ -2,7 +2,7 @@ import Database from '~~/utils/Database'
 
 export default defineEventHandler(async (handler) => {
   try {
-    const url = handler.req.url
+    const url = handler.req.url.replace('/api', '')
     if (url) {
       if (url.endsWith('/')) {
         throw new Error('[server/api] Invalid Url.')

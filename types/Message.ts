@@ -41,12 +41,15 @@ export abstract class Message {
     return uuid
   }
 
-  public static objectToMessage (obj: ContentCommon | ContentFile | ContentText): Message {
-    switch (obj.type) {
+  public static objectToMessage (obj: any): Message {
+    // ちょっと怖いけどValidationできることを期待する
+    const contentType = obj._content.type
+
+    switch (contentType) {
       case MessageType.File:
-        return new MessageFile(obj)
+        return new MessageFile(obj._content)
       case MessageType.Text:
-        return new MessageText(obj)
+        return new MessageText(obj._content)
       default:
         throw new Error('[Message::objectToMessage] Invalid type.')
     }
@@ -61,7 +64,7 @@ export abstract class Message {
 export class MessageFile extends Message {
   private _content: ContentFile = {
     type: MessageType.File,
-    guid: '',
+    guid: Message.createGuid(),
     url: '',
     filename: ''
   }
@@ -83,7 +86,7 @@ export class MessageFile extends Message {
 export class MessageText extends Message {
   private _content: ContentText = {
     type: MessageType.Text,
-    guid: '',
+    guid: Message.createGuid(),
     url: '',
     text: ''
   }
