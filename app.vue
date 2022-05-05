@@ -9,20 +9,25 @@
       <MessageBase v-for="message in messages" :key="message.contentCommon.guid" :message-data="message" />
     </main>
     <DialogText ref="textDialog" @submitText="onSubmitText" />
+    <FileDrop v-if="isDragging" @dragleave="onDragExit" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { DialogText } from './.nuxt/components'
+import { DialogText, FileDrop } from './.nuxt/components'
 import { MessageText, Message } from './types/Message'
 import { Request } from './utils/ApiRequest'
 
 export default defineComponent({
+  components: {
+    DialogText, FileDrop
+  },
   setup () {
     const textDialog = ref<InstanceType<typeof DialogText>>()
     const route = useRoute()
     const messages = ref<Array<Message>>([])
+    const isDragging = ref<boolean>(false)
 
     const onSubmitText = async (text: string) => {
       const message = new MessageText({
@@ -45,14 +50,27 @@ export default defineComponent({
       }
     }
 
+    const onDragEnter = (_e: DragEvent) => {
+      isDragging.value = true
+    }
+    const onDragExit = (_e: DragEvent) => {
+      isDragging.value = false
+    }
+
     onMounted(() => {
       fetchMessages()
+
+      window.addEventListener('dragover', onDragEnter)
+      window.addEventListener('dragend', onDragExit)
+      window.addEventListener('drop', onDragExit)
     })
 
     return {
       textDialog,
       messages,
-      onSubmitText
+      onSubmitText,
+      isDragging,
+      onDragExit
     }
   }
 })
