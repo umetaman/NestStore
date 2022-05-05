@@ -59,6 +59,10 @@ export abstract class Message {
   public getType (): MessageType {
     return this.contentCommon.type
   }
+
+  public getApiUrl (): string {
+    return `/api/${this.contentCommon.url}`
+  }
 }
 
 export class MessageFile extends Message {

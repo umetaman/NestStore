@@ -10,20 +10,26 @@ export class Request {
     }
 
     const message = messages[0]
-    return await axios.post(`/api/${message.contentCommon.url}`, messages)
+    return await axios.post(message.getApiUrl(), messages)
   }
 
-  static async uploadFile (message: MessageFile, stream: fs.ReadStream) {
+  static async uploadFile (message: MessageFile, file: File) {
     const form = new FormData()
-    form.append('uploadFile', stream)
+    form.append('uploadFile', file)
 
-    const config = {
-      headers: { ...form.getHeaders() }
+    const url = `/upload${message.contentCommon.url}/${message.content.filename}`
+
+    const messageResponse = await axios.post(message.getApiUrl(), [message])
+    const uploadResponse = await axios.post(url, form, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+
+    return {
+      message: messageResponse,
+      upload: uploadResponse
     }
-
-    const url = `/upload${message.contentCommon.url}`
-
-    return await axios.post(url, form, config)
   }
 
   static async getMessages (url: string) {

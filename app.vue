@@ -9,14 +9,14 @@
       <MessageBase v-for="message in messages" :key="message.contentCommon.guid" :message-data="message" />
     </main>
     <DialogText ref="textDialog" @submitText="onSubmitText" />
-    <FileDrop v-if="isDragging" @dragleave="onDragExit" />
+    <FileDrop v-if="isDragging" @dragleave="onDragExit" @onFileDropped="onDroppedFiles" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { DialogText, FileDrop } from './.nuxt/components'
-import { MessageText, Message } from './types/Message'
+import { MessageText, Message, MessageFile } from './types/Message'
 import { Request } from './utils/ApiRequest'
 
 export default defineComponent({
@@ -36,6 +36,22 @@ export default defineComponent({
       })
       console.log(message)
       await Request.uploadMessage([message])
+      await nextTick()
+      await fetchMessages()
+    }
+
+    const onDroppedFiles = async (files: FileList) => {
+      if (files.length < 1) {
+        console.error('[OnDroppedFiles] files are empty.')
+        return
+      }
+
+      const file = files.item(0)
+      const message = new MessageFile({
+        url: route.path,
+        filename: file.name
+      })
+      await Request.uploadFile(message, file)
       await nextTick()
       await fetchMessages()
     }
@@ -69,6 +85,7 @@ export default defineComponent({
       textDialog,
       messages,
       onSubmitText,
+      onDroppedFiles,
       isDragging,
       onDragExit
     }

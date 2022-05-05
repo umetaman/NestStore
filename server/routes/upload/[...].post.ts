@@ -1,6 +1,8 @@
 import { Storage } from '~~/utils/Storage'
 
 export default defineEventHandler(async (handler) => {
+  console.log('Hello.')
+  console.log(handler.req.url)
   try {
     const url = handler.req.url
     if (url) {
@@ -21,5 +23,7 @@ export default defineEventHandler(async (handler) => {
 
   console.log('Posted')
 
-  return handler.req.url
+  return {
+    isSucceeded: true
+  }
 })

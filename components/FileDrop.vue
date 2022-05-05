@@ -14,11 +14,12 @@
 
 <script lang="ts">
 export default defineComponent({
-  setup () {
+  setup (_props, context) {
     const onDropped = (e: DragEvent) => {
       e.preventDefault()
 
-      console.log(e.dataTransfer.files)
+      const fileList = e.dataTransfer.files
+      context.emit('onFileDropped', fileList)
     }
 
     return {
